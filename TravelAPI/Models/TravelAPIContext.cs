@@ -9,8 +9,6 @@ namespace TravelAPI.Models
         {
         }
 
-        public virtual DbSet<Location> Locations { get; set; }
-        public virtual DbSet<Attraction> Attractions { get; set; }
-        public virtual DbSet<AttractionLocation> AttractionLocation { get; set; }
+        public virtual DbSet<Review> Reviews { get; set; }
     }
 }
