@@ -17,5 +17,10 @@ namespace TravelAPI.Models
         [DisplayName("Enter a Rating")]
         [Range(1, 5, ErrorMessage = "Rating must be on a 1-5 scale.")]
         public int Rating { get; set; }
+
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Token { get; set; }
+        
     }
 }
