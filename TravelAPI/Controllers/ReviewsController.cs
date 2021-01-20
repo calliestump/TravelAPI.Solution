@@ -3,11 +3,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TravelAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using TravelAPI.Services;
-using TravelAPI.Entities;
 
-namespace TravelAPI.Models
+namespace TravelAPI.Contollers
 {
   [Route("api/[controller]")]
   [ApiController]
@@ -15,26 +12,19 @@ namespace TravelAPI.Models
   {
     
     private TravelAPIContext _db;
-    private IUserService _userService;
     public ReviewsController(TravelAPIContext db)
     {
       _db =db;
     }
-    
-    // GET api/Reviews
 
-    [Authorize]
+    // GET api/Reviews
     [HttpGet]
-    public ActionResult<IEnumerable<Review>> Get(string username, string password, string city, string country, int rating)
+    public ActionResult<IEnumerable<Review>> Get(string description, int rating)
     {
       var query = _db.Reviews.AsQueryable();
-      if (username != null)
+      if (description != null)
       {
-        query = query.Where(entry => entry.Username == username);
-      }
-      if (password != null)
-      {
-        query = query.Where(entry => entry.Password == password);
+        query = query.Where(entry => entry.Description == description);
       }
       if (rating != 0)
       {
@@ -49,6 +39,7 @@ namespace TravelAPI.Models
       _db.Reviews.Add(review);
       _db.SaveChanges();
     }
+
     // GET api/Reviews/{id}
     // [Authorize]
     [HttpGet("{id}")]
@@ -56,8 +47,8 @@ namespace TravelAPI.Models
     {
       return _db.Reviews.FirstOrDefault(entry => entry.ReviewId == id);
     }
-    // PUT api/Reviews/{id}
 
+    // PUT api/Reviews/{id}
     [HttpPut("{id}")]
     public void Put(int id, [FromBody] Review review)
     {
@@ -65,33 +56,14 @@ namespace TravelAPI.Models
       _db.Entry(review).State = EntityState.Modified;
       _db.SaveChanges();
     }
+    
     // DELETE api/Reviews/{id}
     [HttpDelete("{id}")]
     public void Delete(int id)
     {
-      var ReviewToDelete = _db.Reviews.FirstOrDefault(entry => entry.ReviewId == id);
-      _db.Reviews.Remove(ReviewToDelete);
+      var reviewToDelete = _db.Reviews.FirstOrDefault(entry => entry.ReviewId == id);
+      _db.Reviews.Remove(reviewToDelete);
       _db.SaveChanges();
     }
-
-    [AllowAnonymous]
-    [HttpPost("authenticate")]
-    public IActionResult Authenticate([FromBody] Review review)
-    {
-      var user = _userService.Authenticate(review.Username, review.Password);
-
-
-      if (user == null)
-        return BadRequest(new { message = "Username or password is incorrect"});
-
-      return Ok(user);  
-    }
-
-    [HttpGet]
-      public IActionResult GetAll()
-      {
-          var users =  _userService.GetAll();
-          return Ok(users);
-      }
   }
 }

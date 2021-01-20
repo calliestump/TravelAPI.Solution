@@ -7,20 +7,14 @@ namespace TravelAPI.Models
     public class Review
     {
         public int ReviewId { get; set; }
+        
         [Required]
         [DisplayName("Enter a Rating")]
         [Range(1, 5, ErrorMessage = "Rating must be on a 1-5 scale.")]
         public int Rating { get; set; }
-
-
-
         [Required]
-        [DisplayName("Enter your username")]
-        public string Username { get; set; }
-        [Required]
-        [DisplayName("Enter yuur password")]
-        public string Password { get; set; }
-        public string Token { get; set; }
-        
+        [DisplayName("Enter a Description")]
+        [StringLength(50, ErrorMessage = "Description must be at least 50 characters")]
+        public string Description { get; set; }
     }
 }

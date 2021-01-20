@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using TravelAPI.Services;
 using TravelAPI.Entities;
 
-namespace TravelAPI.Models
+namespace TravelAPI.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
@@ -15,32 +15,21 @@ namespace TravelAPI.Models
   {
     
     private TravelAPIContext _db;
-    private IUserService _userService;
     public LocationsController(TravelAPIContext db)
     {
       _db =db;
     }
     
-    // GET api/Reviews
-
-    [Authorize]
+    // GET api/Locations
     [HttpGet]
-    public ActionResult<IEnumerable<Review>> Get(string username, string password, string city, string country)
+    public ActionResult<IEnumerable<Location>> Get(string country, string city)
     {
-      var query = _db.Reviews.AsQueryable();
-      if (username != null)
-      {
-        query = query.Where(entry => entry.Username == username);
-      }
-      if (password != null)
-      {
-        query = query.Where(entry => entry.Password == password);
-      }
+      var query = _db.Locations.AsQueryable();
       if (city != null)
       {
         query = query.Where(entry => entry.City == city);
       }
-      if (country != null)
+      if (country!= null)
       {
         query = query.Where(entry => entry.Country == country);
       }
@@ -58,12 +47,12 @@ namespace TravelAPI.Models
     [HttpGet("{id}")]
     public ActionResult<Location> Get(int id)
     {
-      return _db.Reviews.FirstOrDefault(entry => entry.LocationId == id);
+      return _db.Locations.FirstOrDefault(entry => entry.LocationId == id);
     }
+    
     // PUT api/Locations/{id}
-
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] Locaiton location)
+    public void Put(int id, [FromBody] Location location)
     {
       location.LocationId = id;
       _db.Entry(location).State = EntityState.Modified;
@@ -77,25 +66,5 @@ namespace TravelAPI.Models
       _db.Locations.Remove(LocationToDelete);
       _db.SaveChanges();
     }
-
-    [AllowAnonymous]
-    [HttpPost("authenticate")]
-    public IActionResult Authenticate([FromBody] Location location)
-    {
-      var user = _userService.Authenticate(location.Username, location.Password);
-
-
-      if (user == null)
-        return BadRequest(new { message = "Username or password is incorrect"});
-
-      return Ok(user);  
-    }
-
-    [HttpGet]
-      public IActionResult GetAll()
-      {
-          var users =  _userService.GetAll();
-          return Ok(users);
-      }
-  }
-}
+  } 
+}   

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TravelAPI.Models;
 
 namespace TravelAPI.Models
 {
@@ -10,5 +11,6 @@ namespace TravelAPI.Models
         }
 
         public virtual DbSet<Review> Reviews { get; set; }
+        public virtual DbSet<Location> Locations { get; set; }
     }
 }
