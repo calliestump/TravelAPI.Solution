@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using TravelAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using TravelAPI.Services;
-using TravelAPI.Entities;
 
 namespace TravelAPI.Controllers
 {
@@ -13,13 +11,12 @@ namespace TravelAPI.Controllers
   [ApiController]
   public class LocationsController : ControllerBase
   {
-    
     private TravelAPIContext _db;
     public LocationsController(TravelAPIContext db)
     {
-      _db =db;
+      _db = db;
     }
-    
+
     // GET api/Locations
     [HttpGet]
     public ActionResult<IEnumerable<Location>> Get(string country, string city)
@@ -29,7 +26,7 @@ namespace TravelAPI.Controllers
       {
         query = query.Where(entry => entry.City == city);
       }
-      if (country!= null)
+      if (country != null)
       {
         query = query.Where(entry => entry.Country == country);
       }
@@ -49,7 +46,7 @@ namespace TravelAPI.Controllers
     {
       return _db.Locations.FirstOrDefault(entry => entry.LocationId == id);
     }
-    
+
     // PUT api/Locations/{id}
     [HttpPut("{id}")]
     public void Put(int id, [FromBody] Location location)
@@ -66,5 +63,5 @@ namespace TravelAPI.Controllers
       _db.Locations.Remove(LocationToDelete);
       _db.SaveChanges();
     }
-  } 
-}   
+  }
+}
