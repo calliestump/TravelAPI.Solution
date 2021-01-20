@@ -11,12 +11,12 @@ namespace TravelAPI.Models
 {
   [Route("api/[controller]")]
   [ApiController]
-  public class ReviewsController : ControllerBase
+  public class LocationsController : ControllerBase
   {
     
     private TravelAPIContext _db;
     private IUserService _userService;
-    public ReviewsController(TravelAPIContext db)
+    public LocationsController(TravelAPIContext db)
     {
       _db =db;
     }
@@ -25,7 +25,7 @@ namespace TravelAPI.Models
 
     [Authorize]
     [HttpGet]
-    public ActionResult<IEnumerable<Review>> Get(string username, string password, string city, string country, int rating)
+    public ActionResult<IEnumerable<Review>> Get(string username, string password, string city, string country)
     {
       var query = _db.Reviews.AsQueryable();
       if (username != null)
@@ -36,49 +36,53 @@ namespace TravelAPI.Models
       {
         query = query.Where(entry => entry.Password == password);
       }
-      if (rating != 0)
+      if (city != null)
       {
-        query = query.Where(entry => entry.Rating == rating);
+        query = query.Where(entry => entry.City == city);
+      }
+      if (country != null)
+      {
+        query = query.Where(entry => entry.Country == country);
       }
       return query.ToList();
     }
-    // POST api/Reviews
+    // POST api/Locations
     [HttpPost]
-    public void Post([FromBody] Review review)
+    public void Post([FromBody] Location location)
     {
-      _db.Reviews.Add(review);
+      _db.Locations.Add(location);
       _db.SaveChanges();
     }
-    // GET api/Reviews/{id}
+    // GET api/Locations/{id}
     // [Authorize]
     [HttpGet("{id}")]
-    public ActionResult<Review> Get(int id)
+    public ActionResult<Location> Get(int id)
     {
-      return _db.Reviews.FirstOrDefault(entry => entry.ReviewId == id);
+      return _db.Reviews.FirstOrDefault(entry => entry.LocationId == id);
     }
-    // PUT api/Reviews/{id}
+    // PUT api/Locations/{id}
 
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] Review review)
+    public void Put(int id, [FromBody] Locaiton location)
     {
-      review.ReviewId = id;
-      _db.Entry(review).State = EntityState.Modified;
+      location.LocationId = id;
+      _db.Entry(location).State = EntityState.Modified;
       _db.SaveChanges();
     }
-    // DELETE api/Reviews/{id}
+    // DELETE api/Location/{id}
     [HttpDelete("{id}")]
     public void Delete(int id)
     {
-      var ReviewToDelete = _db.Reviews.FirstOrDefault(entry => entry.ReviewId == id);
-      _db.Reviews.Remove(ReviewToDelete);
+      var LocationToDelete = _db.Locations.FirstOrDefault(entry => entry.LocationId == id);
+      _db.Locations.Remove(LocationToDelete);
       _db.SaveChanges();
     }
 
     [AllowAnonymous]
     [HttpPost("authenticate")]
-    public IActionResult Authenticate([FromBody] Review review)
+    public IActionResult Authenticate([FromBody] Location location)
     {
-      var user = _userService.Authenticate(review.Username, review.Password);
+      var user = _userService.Authenticate(location.Username, location.Password);
 
 
       if (user == null)

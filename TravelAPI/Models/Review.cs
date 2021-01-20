@@ -8,17 +8,17 @@ namespace TravelAPI.Models
     {
         public int ReviewId { get; set; }
         [Required]
-        [DisplayName("Enter a City")]
-        public string City { get; set; }
-        [Required]
-        [DisplayName("Enter a Country")]
-        public string Country { get; set; }
-        [Required]
         [DisplayName("Enter a Rating")]
         [Range(1, 5, ErrorMessage = "Rating must be on a 1-5 scale.")]
         public int Rating { get; set; }
 
+
+
+        [Required]
+        [DisplayName("Enter your username")]
         public string Username { get; set; }
+        [Required]
+        [DisplayName("Enter yuur password")]
         public string Password { get; set; }
         public string Token { get; set; }
         
