@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace TravelAPI
 {
-  public class Startup
+    public class Startup
     {
         public Startup(IConfiguration configuration)
         {

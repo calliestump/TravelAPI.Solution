@@ -5,19 +5,19 @@ using System.Collections.Generic;
 
 namespace TravelAPI.Models
 {
-    public class Location
+  public class Location
+  {
+    public Location()
     {
-        public Location()
-        {
-          this.JoinTables = new HashSet<LocationReview>();
-        }
-        public int LocationId { get; set; }
-        [Required]
-        [DisplayName("Enter a City")]
-        public string City { get; set; }
-        [Required]
-        [DisplayName("Enter a Country")]
-        public string Country { get; set; }
-        public ICollection<LocationReview> JoinTables { get; set; }  
+      this.Reviews = new HashSet<LocationReview>();
     }
+    public int LocationId { get; set; }
+    [Required]
+    [DisplayName("Enter a City")]
+    public string City { get; set; }
+    [Required]
+    [DisplayName("Enter a Country")]
+    public string Country { get; set; }
+    public ICollection<LocationReview> Reviews { get; set; }
+  }
 }

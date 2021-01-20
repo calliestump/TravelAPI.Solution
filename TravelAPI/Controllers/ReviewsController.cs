@@ -41,7 +41,6 @@ namespace TravelAPI.Contollers
     }
 
     // GET api/Reviews/{id}
-    // [Authorize]
     [HttpGet("{id}")]
     public ActionResult<Review> Get(int id)
     {

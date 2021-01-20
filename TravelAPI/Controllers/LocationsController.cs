@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TravelAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace TravelAPI.Controllers
 {
@@ -39,8 +39,8 @@ namespace TravelAPI.Controllers
       _db.Locations.Add(location);
       _db.SaveChanges();
     }
+
     // GET api/Locations/{id}
-    // [Authorize]
     [HttpGet("{id}")]
     public ActionResult<Location> Get(int id)
     {
@@ -55,6 +55,19 @@ namespace TravelAPI.Controllers
       _db.Entry(location).State = EntityState.Modified;
       _db.SaveChanges();
     }
+
+    // POST api/Locations/{id}
+    [HttpPost("{LocationId}")]
+    public void AddReview(int LocationId, int ReviewId)
+    {
+      Console.WriteLine(ReviewId);
+      if (ReviewId != 0)
+      {
+        _db.LocationReview.Add(new LocationReview() { ReviewId = ReviewId, LocationId = LocationId });
+      }
+      _db.SaveChanges();
+    }
+
     // DELETE api/Location/{id}
     [HttpDelete("{id}")]
     public void Delete(int id)
