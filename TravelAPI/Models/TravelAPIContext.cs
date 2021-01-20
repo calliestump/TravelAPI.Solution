@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TravelAPI.Models;
+
 
 namespace TravelAPI.Models
 {
