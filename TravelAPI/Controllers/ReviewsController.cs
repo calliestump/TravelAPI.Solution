@@ -3,8 +3,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TravelAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using TravelAPI.Services;
 
 namespace TravelAPI.Models
 {
@@ -17,12 +15,7 @@ namespace TravelAPI.Models
     {
       _db =db;
     }
-    private IUserService _userService;
-
-    public ReviewsController(IUserService userService)
-    {
-        _userService = userService;
-    }
+    
     // GET api/Reviews
     [HttpGet]
     public ActionResult<IEnumerable<Review>> Get(string city, string country, int rating)
@@ -55,26 +48,6 @@ namespace TravelAPI.Models
     {
       return _db.Reviews.FirstOrDefault(entry => entry.ReviewId == id);
     }
-    // Starts authentication for PUT & DELETE
-    [Authorize]
-    [AllowAnonymous]
-    [HttpPost("api/authenticate")]
-    public IActionResult Authenticate([FromBody]Review userParam)
-    {
-        var user = _userService.Authenticate(userParam.Username, userParam.Password);
-
-        if (user == null)
-            return BadRequest(new { message = "Username or password is incorrect" });
-
-        return Ok(user);
-    }
-
-    [HttpGet]
-    public IActionResult GetAll()
-    {
-        var users =  _userService.GetAll();
-        return Ok(users);
-        }
     // PUT api/Reviews/{id}
     [HttpPut("{id}")]
     public void Put(int id, [FromBody] Review review)
