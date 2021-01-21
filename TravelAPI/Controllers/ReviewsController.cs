@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TravelAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace TravelAPI.Contollers
 {
@@ -10,11 +11,11 @@ namespace TravelAPI.Contollers
   [ApiController]
   public class ReviewsController : ControllerBase
   {
-    
+
     private TravelAPIContext _db;
     public ReviewsController(TravelAPIContext db)
     {
-      _db =db;
+      _db = db;
     }
 
     // GET api/Reviews
@@ -55,7 +56,19 @@ namespace TravelAPI.Contollers
       _db.Entry(review).State = EntityState.Modified;
       _db.SaveChanges();
     }
-    
+
+    // POST api/Reviews/{id}
+    [HttpPost("{id}")]
+    public void AddLocation(int id, int LocationId)
+    {
+      Console.WriteLine(LocationId);
+      if (LocationId != 0)
+      {
+        _db.LocationReview.Add(new LocationReview() { LocationId = LocationId, ReviewId = id});
+      }
+      _db.SaveChanges();
+    }
+
     // DELETE api/Reviews/{id}
     [HttpDelete("{id}")]
     public void Delete(int id)

@@ -1,5 +1,4 @@
 
-
 namespace ClientTravelAPI.Models
 {
 
