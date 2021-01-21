@@ -57,13 +57,13 @@ namespace TravelAPI.Controllers
     }
 
     // POST api/Locations/{id}
-    [HttpPost("{LocationId}")]
-    public void AddReview(int LocationId, int ReviewId)
+    [HttpPost("{id}")]
+    public void AddReview(int id, int ReviewId)
     {
       Console.WriteLine(ReviewId);
       if (ReviewId != 0)
       {
-        _db.LocationReview.Add(new LocationReview() { ReviewId = ReviewId, LocationId = LocationId });
+        _db.LocationReview.Add(new LocationReview() { ReviewId = ReviewId, LocationId = id });
       }
       _db.SaveChanges();
     }
