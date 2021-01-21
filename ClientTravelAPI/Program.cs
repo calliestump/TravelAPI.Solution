@@ -15,9 +15,7 @@ namespace ClientTravelAPI
   {
     public static void Main(string[] args)
     {
-      var apiCallTask = ApiHelper.ApiCall();
-      var result = apiCallTask.Result;
-      Console.WriteLine(result);
+
       CreateWebHostBuilder(args).Build().Run();
     }
 
@@ -26,14 +24,4 @@ namespace ClientTravelAPI
             .UseStartup<Startup>();
   }
 
-  public class ApiHelper
-  {
-    public static async Task<string> ApiCall()
-    {
-      RestClient client = new RestClient("https://localhost:5000/api");
-      RestRequest request = new RestRequest($"home.json", Method.GET);
-      var response = await client.ExecuteTaskAsync(request);
-      return response.Content;
-    }
-  }
 }
