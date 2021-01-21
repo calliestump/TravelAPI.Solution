@@ -7,7 +7,7 @@ using ClientTravelAPI.Models;
 
 namespace ClientTravelAPI.Controllers
 {
-  public class ReviewController : Controller
+  public class ReviewsController : Controller
   {
     public IActionResult Index()
     {
